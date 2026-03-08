@@ -5,6 +5,13 @@ let selectedUsers = new Set();
 let selectedDepts = new Set();
 const TASKTYPE_ORDER_STORAGE_KEY = 'kanban.tasktype.order.v1';
 let draggingTaskTypeButton = null;
+const DEFAULT_TASKTYPE_COUNTS = {
+    '114': 5,   // ТЗ на разработку
+    '411': 2,   // Задачи
+    '456': 20,  // Служебная записка
+    '460': 6    // Задачи по протоколу
+};
+const ALERT_TASKTYPE_TYPES = new Set(['114', '460']); // Требует действия
 
 function getKanbanNavbarRoot() {
     return document.getElementById('kanban-navbar');
@@ -67,6 +74,101 @@ function getTaskTypeButtons() {
     const taskGroup = getTaskTypeNavbar();
     if (!taskGroup) return [];
     return Array.from(taskGroup.querySelectorAll('.filterbtn[name="tasktype"]'));
+}
+
+function getTaskTypeCounts() {
+    if (window && window.KANBAN_TASKTYPE_COUNTS && typeof window.KANBAN_TASKTYPE_COUNTS === 'object') {
+        return Object.assign({}, DEFAULT_TASKTYPE_COUNTS, window.KANBAN_TASKTYPE_COUNTS);
+    }
+    return DEFAULT_TASKTYPE_COUNTS;
+}
+
+function applyTaskTypeCounters() {
+    const counts = getTaskTypeCounts();
+    getTaskTypeButtons().forEach(button => {
+        const taskType = String(button.dataset.val || '');
+        const count = Number(counts[taskType] ?? 0);
+        const isAlertType = ALERT_TASKTYPE_TYPES.has(taskType);
+        button.classList.toggle('tasktype-counter-alert', isAlertType);
+        if (count > 0) {
+            button.dataset.taskCount = String(count);
+            button.classList.add('tasktype-with-counter');
+            button.classList.remove('tasktype-counter-empty');
+            button.setAttribute('aria-label', `${button.textContent.trim()}: ${count}`);
+        } else {
+            button.removeAttribute('data-task-count');
+            button.classList.remove('tasktype-with-counter');
+            button.classList.add('tasktype-counter-empty');
+        }
+    });
+}
+
+function parseKanbanDate(value) {
+    if (!value) return null;
+    const dateText = String(value).trim();
+    const match = dateText.match(/^(\d{2})\.(\d{2})\.(\d{2})$/);
+    if (!match) return null;
+    const day = Number(match[1]);
+    const month = Number(match[2]) - 1;
+    const year = 2000 + Number(match[3]);
+    const date = new Date(year, month, day);
+    if (Number.isNaN(date.getTime())) return null;
+    date.setHours(0, 0, 0, 0);
+    return date;
+}
+
+function buildOverdueLabel(daysOverdue) {
+    const days = Math.max(1, Number(daysOverdue) || 1);
+    return `Просрочено: ${days} дн.`;
+}
+
+function decorateKanbanTaskCard(task) {
+    if (!task) return { isOverdue: false, columnId: null };
+
+    const column = task.closest('.column');
+    const columnId = column ? column.id : null;
+    const isCompletedColumn = columnId === 'completed';
+    const dateNodes = task.querySelectorAll('.task-dates span:not(.date-line)');
+    const startDate = dateNodes[0] ? parseKanbanDate(dateNodes[0].textContent) : null;
+    const planDate = dateNodes[1] ? parseKanbanDate(dateNodes[1].textContent) : null;
+
+    task.classList.remove('prolonged', 'action-required');
+
+    if (startDate && planDate) {
+        const timelineDays = Math.floor((planDate - startDate) / 86400000);
+        if (timelineDays >= 28) {
+            task.classList.add('prolonged');
+        }
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const overdueDays = Math.floor((today - planDate) / 86400000);
+
+        if (!isCompletedColumn && overdueDays > 0) {
+            task.classList.add('overdue');
+            task.setAttribute('data-overdue-label', buildOverdueLabel(overdueDays));
+            return { isOverdue: true, columnId };
+        }
+    }
+
+    if (task.classList.contains('overdue') && !task.hasAttribute('data-overdue-label')) {
+        task.setAttribute('data-overdue-label', 'Просрочено');
+        return { isOverdue: !isCompletedColumn, columnId };
+    }
+
+    return { isOverdue: false, columnId };
+}
+
+function enhanceKanbanBoard() {
+    const tasks = document.querySelectorAll('#kanbanContainer .task');
+    const actionAssignedColumns = new Set();
+
+    tasks.forEach(task => {
+        const { isOverdue, columnId } = decorateKanbanTaskCard(task);
+        if (!isOverdue || !columnId || actionAssignedColumns.has(columnId)) return;
+        task.classList.add('action-required');
+        actionAssignedColumns.add(columnId);
+    });
 }
 
 function readTaskTypeOrder() {
@@ -244,6 +346,7 @@ function onTaskTypeDragEnd() {
 function initTaskTypeDragAndDrop() {
     const groups = ensureKanbanNavbarGroups();
     applySavedTaskTypeOrder();
+    applyTaskTypeCounters();
     const taskGroup = groups ? groups.taskGroup : null;
     if (taskGroup && taskGroup.dataset.dragReady !== '1') {
         taskGroup.dataset.dragReady = '1';
@@ -288,6 +391,7 @@ function getInitialTaskTypeButton() {
 
 document.addEventListener("DOMContentLoaded", function () {
     initTaskTypeDragAndDrop();
+    enhanceKanbanBoard();
 
     const defaultBtn = getInitialTaskTypeButton();
     if (defaultBtn) {
@@ -433,6 +537,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (kanbanContainer) {
                     kanbanContainer.innerHTML = html;
                     executeScripts(kanbanContainer);
+                    window.requestAnimationFrame(enhanceKanbanBoard);
                 }
             })
     }
