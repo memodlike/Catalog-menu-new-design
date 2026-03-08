@@ -122,6 +122,82 @@ function buildOverdueLabel(daysOverdue) {
     return `Просрочено: ${days} дн.`;
 }
 
+function syncKanbanHeaderCount(columnId) {
+    const column = document.getElementById(columnId);
+    if (!column) return;
+    const wrapper = column.querySelector('.tasks-wrapper');
+    const statusCount = column.querySelector('.status-count');
+    if (!wrapper || !statusCount) return;
+    const count = wrapper.querySelectorAll(':scope > .task-link').length;
+    statusCount.textContent = String(count);
+}
+
+function enforceKanbanColumnLimits() {
+    const limits = {
+        completed: 5,
+        on_review: 3,
+        in_progress: 4
+    };
+
+    Object.entries(limits).forEach(([columnId, limit]) => {
+        const wrapper = document.getElementById(`${columnId}-tasks`);
+        if (!wrapper) return;
+        const cards = Array.from(wrapper.querySelectorAll(':scope > .task-link'));
+        if (cards.length > limit) {
+            cards.slice(limit).forEach(card => card.remove());
+        }
+        syncKanbanHeaderCount(columnId);
+    });
+}
+
+function buildGeneratedNewTaskCard() {
+    const link = document.createElement('a');
+    link.href = '#';
+    link.className = 'task-link generated-new-card';
+    link.innerHTML = `
+        <div class="task">
+            <div class="task-header">Новая задача по макету: подготовка карточки для этапа «Новый»</div>
+            <div class="task-dates"><span>10.03.26</span><span class="date-line"></span><span class="task1">15.03.26</span></div>
+            <div style="display: flex; justify-content: space-between;"><div>ID 9905</div><div>Каримов Мухамеджан Булатулы</div></div>
+        </div>
+    `;
+    return link;
+}
+
+function ensureExtraCardInNewColumn() {
+    const wrapper = document.getElementById('new-tasks');
+    if (!wrapper) return;
+
+    wrapper.querySelectorAll(':scope > .generated-new-card').forEach(card => card.remove());
+    wrapper.appendChild(buildGeneratedNewTaskCard());
+    syncKanbanHeaderCount('new');
+}
+
+function updateKanbanColumnFillers() {
+    const columns = document.querySelectorAll('#kanbanContainer .column');
+    const minVisibleFillerHeight = 96;
+
+    columns.forEach(column => {
+        const header = column.querySelector('.kanban-header');
+        const wrapper = column.querySelector('.tasks-wrapper');
+        const filler = column.querySelector('.column-filler');
+        if (!header || !wrapper || !filler) return;
+
+        const fillerGap = 12;
+        const usedHeight = header.offsetHeight + wrapper.offsetHeight + fillerGap;
+        const freeHeight = column.clientHeight - usedHeight;
+
+        if (freeHeight <= minVisibleFillerHeight) {
+            filler.classList.add('is-hidden');
+            filler.style.height = '0px';
+            return;
+        }
+
+        filler.classList.remove('is-hidden');
+        filler.style.height = `${freeHeight}px`;
+    });
+}
+
 function decorateKanbanTaskCard(task) {
     if (!task) return { isOverdue: false, columnId: null };
 
@@ -144,15 +220,25 @@ function decorateKanbanTaskCard(task) {
         today.setHours(0, 0, 0, 0);
         const overdueDays = Math.floor((today - planDate) / 86400000);
 
-        if (!isCompletedColumn && overdueDays > 0) {
+        if (overdueDays > 0) {
             task.classList.add('overdue');
             task.setAttribute('data-overdue-label', buildOverdueLabel(overdueDays));
-            return { isOverdue: true, columnId };
+            return { isOverdue: !isCompletedColumn, columnId };
         }
     }
 
     if (task.classList.contains('overdue') && !task.hasAttribute('data-overdue-label')) {
-        task.setAttribute('data-overdue-label', 'Просрочено');
+        const plannedDateNode = task.querySelector('.task-dates span:not(.date-line):last-child');
+        const plannedDate = plannedDateNode ? parseKanbanDate(plannedDateNode.textContent) : null;
+        let overdueDays = Number(task.getAttribute('data-overdue-days') || 0);
+
+        if ((!Number.isFinite(overdueDays) || overdueDays <= 0) && plannedDate) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            overdueDays = Math.floor((today - plannedDate) / 86400000);
+        }
+
+        task.setAttribute('data-overdue-label', buildOverdueLabel(overdueDays));
         return { isOverdue: !isCompletedColumn, columnId };
     }
 
@@ -160,6 +246,9 @@ function decorateKanbanTaskCard(task) {
 }
 
 function enhanceKanbanBoard() {
+    enforceKanbanColumnLimits();
+    ensureExtraCardInNewColumn();
+
     const tasks = document.querySelectorAll('#kanbanContainer .task');
     const actionAssignedColumns = new Set();
 
@@ -169,7 +258,14 @@ function enhanceKanbanBoard() {
         task.classList.add('action-required');
         actionAssignedColumns.add(columnId);
     });
+
+    ['new', 'on_review', 'in_progress', 'completed'].forEach(syncKanbanHeaderCount);
+    window.requestAnimationFrame(updateKanbanColumnFillers);
 }
+
+window.addEventListener('resize', function () {
+    window.requestAnimationFrame(updateKanbanColumnFillers);
+});
 
 function readTaskTypeOrder() {
     try {

@@ -3289,11 +3289,17 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
 }
 
 /* Stable sidebar geometry + minified float submenu */
+#mainmenu {
+    --mainmenu-item-gap: 0.125rem;
+    --mainmenu-link-height: 2.25rem;
+}
+
 #mainmenu .menu-item > .menu-link {
-    min-height: 2.25rem !important;
+    min-height: var(--mainmenu-link-height) !important;
     display: flex;
     align-items: center;
-    transition: background-color 0.16s ease, color 0.16s ease, padding 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+    box-sizing: border-box;
+    transition: background-color 0.16s ease, color 0.16s ease;
 }
 
 #mainmenu > .menu-item {
@@ -3301,11 +3307,13 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
 }
 
 #mainmenu > .menu-item + .menu-item {
-    margin-top: 0.125rem !important;
+    margin-top: var(--mainmenu-item-gap) !important;
 }
 
 #mainmenu > .menu-item > .menu-link {
-    padding: 0.45rem 0.75rem !important;
+    height: var(--mainmenu-link-height) !important;
+    min-height: var(--mainmenu-link-height) !important;
+    padding: 0 0.75rem !important;
 }
 
 #mainmenu .menu-item > .menu-link .menu-icon,
@@ -3329,9 +3337,14 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
 
 #app.app-sidebar-minified #mainmenu > .menu-item > .menu-link {
     justify-content: center;
-    min-height: 2.25rem !important;
-    padding: 0.45rem 0.75rem !important;
+    height: var(--mainmenu-link-height) !important;
+    min-height: var(--mainmenu-link-height) !important;
+    padding: 0 0.75rem !important;
     margin: 0 !important;
+}
+
+#app.app-sidebar-minified #mainmenu > .menu-item + .menu-item {
+    margin-top: var(--mainmenu-item-gap) !important;
 }
 
 #app.app-sidebar-minified #mainmenu > .menu-item > .menu-link .menu-caret {
