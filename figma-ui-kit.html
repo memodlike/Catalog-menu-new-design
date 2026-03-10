@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SABR Insurance — UI Kit</title>
+  <link rel="stylesheet" href="./Главная страница_files/tabler-icons.min.css">
+  <style>
+    :root {
+      --radius-outer: 16px;
+      --radius-column: 14px;
+      --radius-card: 12px;
+      --radius-inner: 10px;
+
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+
+      --font-main: "Inter", "SF Pro Display", "Segoe UI", Arial, sans-serif;
+      --bg-page: #e3e7f0;
+      --text-main: #1f2a44;
+      --text-muted: #5f6f93;
+      --line: #c5d0e4;
+      --primary: #2f6cec;
+      --primary-soft: #dbe8ff;
+      --green: #22a45a;
+      --red: #ef4444;
+      --orange: #f59e0b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-main);
+      color: var(--text-main);
+      background: linear-gradient(180deg, #dde3ee 0%, #e8ecf4 100%);
+    }
+
+    .page {
+      width: 1920px;
+      margin: 0 auto;
+      padding: 28px;
+      display: grid;
+      gap: 24px;
+    }
+
+    .head {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(255,255,255,0.85);
+      border-radius: 20px;
+      padding: 20px 24px;
+      backdrop-filter: blur(10px);
+    }
+
+    .head h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .head p {
+      margin: 0;
+      color: #4f5f84;
+      font-size: 16px;
+    }
+
+    .themes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .frame {
+      border-radius: 24px;
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: 0 12px 28px rgba(24, 36, 62, 0.14);
+      min-height: 1020px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .frame.light {
+      background: #dfe4ef;
+      color: #1f2a44;
+    }
+
+    .frame.dark {
+      background: #111a2d;
+      color: #e8eefc;
+      border-color: rgba(90, 112, 159, 0.45);
+      box-shadow: 0 18px 38px rgba(2, 5, 15, 0.55);
+    }
+
+    .label {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .light .label {
+      background: rgba(47, 108, 236, .14);
+      color: #2f6cec;
+      border: 1px solid rgba(47, 108, 236, .22);
+    }
+
+    .dark .label {
+      background: rgba(88, 139, 255, .18);
+      color: #9ec0ff;
+      border: 1px solid rgba(132, 168, 255, .3);
+    }
+
+    .topbar {
+      background: rgba(255,255,255,.82);
+      border: 1px solid rgba(201, 212, 231, 0.75);
+      border-radius: 16px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .dark .topbar {
+      background: rgba(25, 37, 61, .92);
+      border-color: rgba(78, 102, 145, .5);
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: #d7aa65;
+      color: #fff;
+      font-weight: 900;
+      font-size: 18px;
+    }
+
+    .brand-name {
+      font-size: 24px;
+      font-weight: 800;
+      color: #20a95e;
+      letter-spacing: .01em;
+    }
+
+    .dark .brand-name { color: #37cb78; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 12px;
+    }
+
+    .sidebar {
+      border-radius: var(--radius-column);
+      border: 1px solid #c7d2e7;
+      background: #e5eaf5;
+      padding: 12px 10px;
+      min-height: 860px;
+      position: relative;
+    }
+
+    .dark .sidebar {
+      background: #16233d;
+      border-color: #31496f;
+    }
+
+    .menu-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2px 4px 10px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-size: 24px;
+      font-weight: 800;
+      color: #6f7fa2;
+    }
+
+    .menu-toggle {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #6f7fa2;
+      background: rgba(111,127,162,.12);
+      font-size: 16px;
+    }
+
+    .dark .menu-head,
+    .dark .menu-toggle { color: #9fb2d8; }
+
+    .menu-list { display: grid; gap: 2px; }
+
+    .menu-item {
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 8px;
+      color: #394d78;
+      position: relative;
+      background: transparent;
+      border: 1px solid transparent;
+    }
+
+    .dark .menu-item { color: #b8c9ec; }
+
+    .menu-item.active {
+      background: rgba(47,108,236,.10);
+      border-color: rgba(47,108,236,.2);
+    }
+
+    .dark .menu-item.active {
+      background: rgba(88,139,255,.16);
+      border-color: rgba(128,165,255,.28);
+    }
+
+    .menu-item .icon {
+      width: 20px;
+      min-width: 20px;
+      height: 20px;
+      font-size: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .menu-item .caret {
+      margin-left: auto;
+      width: 16px;
+      height: 16px;
+      font-size: 16px;
+      opacity: .8;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .menu-item.expanded .caret { transform: rotate(90deg); }
+
+    .counter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 7px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #fff;
+      background: linear-gradient(180deg, #ff8a30 0%, #ff5757 100%);
+      box-shadow: 0 3px 8px rgba(255, 102, 79, 0.35);
+      position: absolute;
+      left: 22px;
+      top: -8px;
+    }
+
+    .pin {
+      margin-left: auto;
+      width: 14px;
+      height: 14px;
+      font-size: 14px;
+      opacity: .45;
+    }
+
+    .menu-mini {
+      margin-top: 14px;
+      border-top: 1px dashed rgba(112,129,162,.45);
+      padding-top: 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .mini-caption {
+      font-size: 11px;
+      color: #6f7fa2;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-weight: 700;
+    }
+
+    .mini-collapsed {
+      width: 68px;
+      border-radius: 12px;
+      border: 1px solid #c8d4e8;
+      background: #ecf0f8;
+      padding: 8px;
+      display: grid;
+      gap: 2px;
+      justify-items: center;
+    }
+
+    .mini-collapsed .menu-item {
+      width: 44px;
+      height: 38px;
+      justify-content: center;
+      padding: 0;
+      gap: 0;
+    }
+
+    .mini-collapsed .menu-item .caret,
+    .mini-collapsed .menu-item .text,
+    .mini-collapsed .menu-item .pin { display: none; }
+
+    .dark .mini-collapsed {
+      background: #1a2946;
+      border-color: #345178;
+    }
+
+    .canvas {
+      border-radius: var(--radius-column);
+      border: 1px solid #c7d3e7;
+      background: rgba(235, 240, 248, 0.96);
+      padding: 12px;
+      display: grid;
+      gap: 12px;
+      min-height: 860px;
+    }
+
+    .dark .canvas {
+      border-color: #334f76;
+      background: rgba(20, 31, 52, 0.95);
+    }
+
+    .chips-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      border-radius: 12px;
+      padding: 4px;
+      border: 1px solid rgba(157, 174, 205, 0.65);
+      background: rgba(249, 252, 255, 0.7);
+    }
+
+    .dark .chips-row {
+      border-color: rgba(75, 100, 143, 0.6);
+      background: rgba(27, 41, 68, 0.86);
+    }
+
+    .chip {
+      height: 42px;
+      padding: 0 20px;
+      border-radius: 16px;
+      border: 1px solid #b7c5de;
+      background: #f9fbff;
+      font-size: 17px;
+      font-weight: 700;
+      color: #2e4066;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .chip.active {
+      background: #2f6cec;
+      border-color: #2f6cec;
+      color: #fff;
+    }
+
+    .chip.dragging {
+      transform: scale(1.03) rotate(-1deg);
+      box-shadow: 0 14px 24px rgba(47,108,236,.28);
+    }
+
+    .chip.drop-before::before {
+      content: "";
+      position: absolute;
+      left: -6px;
+      top: 7px;
+      bottom: 7px;
+      width: 3px;
+      border-radius: 999px;
+      background: #2f6cec;
+    }
+
+    .chip .chip-counter {
+      position: absolute;
+      right: -7px;
+      top: -9px;
+      min-width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      padding: 0 8px;
+      font-size: 13px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #f0f4fa;
+      border: 1px solid #d2dcec;
+      color: #3f4f72;
+    }
+
+    .chip.alert .chip-counter {
+      background: #ef4444;
+      border-color: #ef4444;
+      color: #fff;
+      box-shadow: 0 6px 12px rgba(239,68,68,.35);
+    }
+
+    .dark .chip {
+      border-color: #496792;
+      background: #1f3152;
+      color: #d2dff9;
+    }
+
+    .dark .chip.active {
+      background: #3a7bff;
+      border-color: #3a7bff;
+      color: #fff;
+    }
+
+    .dark .chip .chip-counter {
+      background: #22365b;
+      border-color: #3e5c87;
+      color: #d7e4ff;
+    }
+
+    .board {
+      border-radius: var(--radius-outer);
+      border: 1px solid #c6d2e6;
+      background: #f6f8fc;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      min-height: 710px;
+    }
+
+    .dark .board {
+      border-color: #36527a;
+      background: #132038;
+    }
+
+    .column {
+      border-radius: var(--radius-column);
+      border: 1px solid transparent;
+      padding: 10px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .column.new {
+      background: #c9d9f5;
+      border-color: #92afe0;
+    }
+
+    .column.on-review {
+      background: #efdfcb;
+      border-color: #ddb68d;
+    }
+
+    .column.in-progress {
+      background: #e2d4f5;
+      border-color: #c49ce8;
+    }
+
+    .column.completed {
+      background: #c9e7d2;
+      border-color: #93cfac;
+    }
+
+    .dark .column.new { background: #2f476f; border-color: #4f709f; }
+    .dark .column.on-review { background: #4b382a; border-color: #855f3e; }
+    .dark .column.in-progress { background: #483a67; border-color: #7358a5; }
+    .dark .column.completed { background: #274c3f; border-color: #3a7b63; }
+
+    .col-head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status {
+      height: 34px;
+      border-radius: 999px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .new .status,
+    .new .count { background: #4b8ff7; }
+
+    .on-review .status,
+    .on-review .count { background: #d66816; }
+
+    .in-progress .status,
+    .in-progress .count { background: #8e56d9; }
+
+    .completed .status,
+    .completed .count { background: #1f9d57; }
+
+    .count {
+      margin-left: auto;
+      min-width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .task {
+      border-radius: var(--radius-card);
+      border: 1px solid #c7d4e8;
+      background: #fff;
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+      box-shadow: 0 2px 8px rgba(36, 52, 84, 0.16);
+    }
+
+    .task:hover { box-shadow: 0 8px 18px rgba(36, 52, 84, 0.22); }
+
+    .task.red {
+      background: #f8dfe2;
+      border-color: #e7b7be;
+    }
+
+    .dark .task {
+      background: #1c2d49;
+      border-color: #3e5d88;
+      color: #e5ecfb;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+    }
+
+    .dark .task.red {
+      background: #6a3943;
+      border-color: #8d525f;
+    }
+
+    .task-title {
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      height: 24px;
+      border-radius: 999px;
+      padding: 0 10px;
+      font-size: 13px;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .badge.overdue {
+      background: linear-gradient(180deg, #ff9a2a 0%, #f97316 100%);
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(249,115,22,.32);
+    }
+
+    .badge.action {
+      background: #ef4444;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(239,68,68,.32);
+    }
+
+    .dates {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .date-box {
+      border-radius: var(--radius-inner);
+      border: 1px solid #ced9eb;
+      background: #edf2fa;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .date-label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: #6c7ea5;
+      font-weight: 700;
+    }
+
+    .date-value {
+      display: block;
+      font-size: 34px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1;
+    }
+
+    .plan { color: #a35a10; border-color: #f2c989; background: #fff1dc; }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      color: #5e7094;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .dark .meta { color: #b8c8e5; }
+
+    .dark .date-box {
+      border-color: #45648f;
+      background: #243a5d;
+    }
+
+    .dark .date-label { color: #9eb7de; }
+
+    .dark .plan { background: #8a4d0f; border-color: #c68545; color: #ffe3bf; }
+
+    .spec {
+      border-radius: 20px;
+      border: 1px solid rgba(199, 212, 234, .95);
+      background: rgba(255,255,255,.84);
+      padding: 18px;
+      backdrop-filter: blur(8px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .spec h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      letter-spacing: -.01em;
+    }
+
+    .spec-list { display: grid; gap: 7px; color: #3e5077; font-size: 14px; }
+
+    .token-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .token {
+      border-radius: 12px;
+      border: 1px solid #cad7ea;
+      background: #f5f8fe;
+      padding: 10px;
+      display: grid;
+      gap: 4px;
+    }
+
+    .token b { font-size: 13px; }
+    .token span { font-size: 12px; color: #60739b; }
+
+    .hint {
+      border-radius: 12px;
+      border: 1px dashed #b8c8e6;
+      padding: 10px;
+      background: #f7faff;
+      font-size: 13px;
+      color: #475c85;
+      line-height: 1.45;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="head">
+      <h1>SABR Insurance — UI Kit и поведение</h1>
+      <p>Light/Dark версия, каталог меню (expanded/minified), состояния карточек Kanban, Drag&amp;Drop для 4 типов документов, и точные токены отступов/радиусов для разработки.</p>
+    </section>
+
+    <section class="themes">
+      <article class="frame light">
+        <span class="label">Light</span>
+
+        <div class="topbar">
+          <span class="brand-mark">△</span>
+          <span class="brand-name">sabr Insurance</span>
+        </div>
+
+        <div class="layout">
+          <aside class="sidebar">
+            <div class="menu-head">
+              <span>Меню</span>
+              <span class="menu-toggle"><i class="ti ti-panel-left-close"></i></span>
+            </div>
+
+            <div class="menu-list">
+              <div class="menu-item active expanded"><span class="icon"><i class="ti ti-settings"></i></span><span class="text">Администрирование</span><span class="caret"><i class="ti ti-chevron-right"></i></span></div>
+              <div class="menu-item"><span class="icon"><i class="ti ti-user-circle"></i></span><span class="text">Личный кабинет</span><span class="caret"><i class="ti ti-chevron-right"></i></span><span class="pin"><i class="ti ti-pin"></i></span></div>
+              <div class="menu-item"><span class="icon"><i class="ti ti-folder"></i></span><span class="text">Мои документы</span><span class="caret"><i class="ti ti-chevron-right"></i></span><span class="pin"><i class="ti ti-pin"></i></span><span class="counter">21</span></div>
+              <div class="menu-item"><span class="icon"><i class="ti ti-clipboard-list"></i></span><span class="text">Заявки ТЗ и задачи</span></div>
+              <div class="menu-item"><span class="icon"><i class="ti ti-notebook"></i></span><span class="text">Служебные записки</span></div>
+            </div>
+
+            <div class="menu-mini">
+              <div class="mini-caption">Collapsed state preview</div>
+              <div class="mini-collapsed">
+                <div class="menu-item"><span class="icon"><i class="ti ti-panel-left-open"></i></span></div>
+                <div class="menu-item"><span class="icon"><i class="ti ti-settings"></i></span></div>
+                <div class="menu-item"><span class="icon"><i class="ti ti-user-circle"></i></span></div>
+                <div class="menu-item"><span class="icon"><i class="ti ti-folder"></i></span><span class="counter">21</span></div>
+              </div>
+            </div>
+          </aside>
+
+          <main class="canvas">
+            <div class="chips-row">
+              <div class="chip active alert dragging"><span>ТЗ на разработку</span><span class="chip-counter">5</span></div>
+              <div class="chip drop-before"><span>Задачи</span><span class="chip-counter">2</span></div>
+              <div class="chip"><span>Служебная записка</span><span class="chip-counter">20</span></div>
+              <div class="chip alert"><span>Задачи по протоколу</span><span class="chip-counter">6</span></div>
+            </div>
+
+            <div class="board">
+              <section class="column new">
+                <div class="col-head"><span class="status">Новый</span><span class="count">1</span></div>
+                <article class="task">
+                  <div class="task-title">Новая задача по макету: подготовка карточки для этапа «Новый»</div>
+                  <div class="dates">
+                    <div class="date-box"><span class="date-label">Старт</span><span class="date-value">10.03.26</span></div>
+                    <div class="date-box"><span class="date-label">План</span><span class="date-value">15.03.26</span></div>
+                  </div>
+                  <div class="meta"><span>ID 9905</span><span>Каримов Мухамеджан Булатұлы</span></div>
+                </article>
+              </section>
+
+              <section class="column on-review">
+                <div class="col-head"><span class="status">На согласовании</span><span class="count">2</span></div>
+                <article class="task">
+                  <div class="task-title">Колокольчик CRM: дублирование уведомлений + ring-анимация</div>
+                  <div class="dates">
+                    <div class="date-box"><span class="date-label">Старт</span><span class="date-value">05.03.26</span></div>
+                    <div class="date-box"><span class="date-label">План</span><span class="date-value">20.03.26</span></div>
+                  </div>
+                  <div class="meta"><span>ID 4134</span><span>Абдибек Айбек Баймендеулы</span></div>
+                </article>
+              </section>
+
+              <section class="column in-progress">
+                <div class="col-head"><span class="status">В работе</span><span class="count">4</span></div>
+                <article class="task red">
+                  <div class="badge-row"><span class="badge overdue">Просрочено: 99 дн.</span><span class="badge action">Требуется действие</span></div>
+                  <div class="task-title">Продукт [3] Каско Залог/Лизинг: каналы VIP / Premium / Standart</div>
+                  <div class="dates">
+                    <div class="date-box"><span class="date-label">Старт</span><span class="date-value">17.11.25</span></div>
+                    <div class="date-box plan"><span class="date-label">План</span><span class="date-value">30.11.25</span></div>
+                  </div>
+                  <div class="meta"><span>ID 3186</span><span>Епашников Сергей Алексеевич</span></div>
+                </article>
+              </section>
+
+              <section class="column completed">
+                <div class="col-head"><span class="status">Исполненные</span><span class="count">5</span></div>
+                <article class="task red">
+                  <div class="badge-row"><span class="badge overdue">Просрочено: 84 дн.</span></div>
+                  <div class="task-title">Комплексная доработка модуля «Служебные записки»</div>
+                  <div class="dates">
+                    <div class="date-box"><span class="date-label">Старт</span><span class="date-value">14.11.25</span></div>
+                    <div class="date-box plan"><span class="date-label">План</span><span class="date-value">15.12.25</span></div>
+                  </div>
+                  <div class="meta"><span>ID 3161</span><span>Даркенбай Шынгыс Адилулы</span></div>
+                </article>
+              </section>
+            </div>
+          </main>
+        </div>
+      </article>
+
+      <article class="frame dark">
+        <span class="label">Dark</span>
+
+        <div class="topbar">
+          <span class="brand-mark">△</span>
+          <span class="brand-name">sabr Insurance</span>
+        </div>
+
+        <div class="layout">
+          <aside class="sidebar">
+            <div class="menu-head">
+              <span>Меню</span>
+              <span class="menu-toggle"><i class="ti ti-panel-left-close"></i></span>
+            </div>
+
+            <div class="menu-list">
+              <div class="menu-item active expanded"><span class="icon"><i class="ti ti-settings"></i></span><span class="text">Администрирование</span><span class="caret"><i class="ti ti-chevron-right"></i></span></div>
+              <div class="menu-item"><span class="icon"><i class="ti ti-user-circle"></i></span><span class="text">Личный кабинет</span><span class="caret"><i class="ti ti-chevron-right"></i></span><span class="pin"><i class="ti ti-pin"></i></span></div>
+              <div class="menu-item"><span class="icon"><i class="ti ti-folder"></i></span><span class="text">Мои документы</span><span class="caret"><i class="ti ti-chevron-right"></i></span><span class="pin"><i class="ti ti-pin"></i></span><span class="counter">21</span></div>
+              <div class="menu-item"><span class="icon"><i class="ti ti-clipboard-list"></i></span><span class="text">Заявки ТЗ и задачи</span></div>
+              <div class="menu-item"><span class="icon"><i class="ti ti-notebook"></i></span><span class="text">Служебные записки</span></div>
+            </div>
+
+            <div class="menu-mini">
+              <div class="mini-caption">Collapsed state preview</div>
+              <div class="mini-collapsed">
+                <div class="menu-item"><span class="icon"><i class="ti ti-panel-left-open"></i></span></div>
+                <div class="menu-item"><span class="icon"><i class="ti ti-settings"></i></span></div>
+                <div class="menu-item"><span class="icon"><i class="ti ti-user-circle"></i></span></div>
+                <div class="menu-item"><span class="icon"><i class="ti ti-folder"></i></span><span class="counter">21</span></div>
+              </div>
+            </div>
+          </aside>
+
+          <main class="canvas">
+            <div class="chips-row">
+              <div class="chip active alert dragging"><span>ТЗ на разработку</span><span class="chip-counter">5</span></div>
+              <div class="chip drop-before"><span>Задачи</span><span class="chip-counter">2</span></div>
+              <div class="chip"><span>Служебная записка</span><span class="chip-counter">20</span></div>
+              <div class="chip alert"><span>Задачи по протоколу</span><span class="chip-counter">6</span></div>
+            </div>
+
+            <div class="board">
+              <section class="column new">
+                <div class="col-head"><span class="status">Новый</span><span class="count">1</span></div>
+                <article class="task">
+                  <div class="task-title">Новая задача по макету: подготовка карточки для этапа «Новый»</div>
+                  <div class="dates">
+                    <div class="date-box"><span class="date-label">Старт</span><span class="date-value">10.03.26</span></div>
+                    <div class="date-box"><span class="date-label">План</span><span class="date-value">15.03.26</span></div>
+                  </div>
+                  <div class="meta"><span>ID 9905</span><span>Каримов Мухамеджан Булатұлы</span></div>
+                </article>
+              </section>
+
+              <section class="column on-review">
+                <div class="col-head"><span class="status">На согласовании</span><span class="count">2</span></div>
+                <article class="task">
+                  <div class="task-title">Колокольчик CRM: дублирование уведомлений + ring-анимация</div>
+                  <div class="dates">
+                    <div class="date-box"><span class="date-label">Старт</span><span class="date-value">05.03.26</span></div>
+                    <div class="date-box"><span class="date-label">План</span><span class="date-value">20.03.26</span></div>
+                  </div>
+                  <div class="meta"><span>ID 4134</span><span>Абдибек Айбек Баймендеулы</span></div>
+                </article>
+              </section>
+
+              <section class="column in-progress">
+                <div class="col-head"><span class="status">В работе</span><span class="count">4</span></div>
+                <article class="task red">
+                  <div class="badge-row"><span class="badge overdue">Просрочено: 99 дн.</span><span class="badge action">Требуется действие</span></div>
+                  <div class="task-title">Продукт [3] Каско Залог/Лизинг: каналы VIP / Premium / Standart</div>
+                  <div class="dates">
+                    <div class="date-box"><span class="date-label">Старт</span><span class="date-value">17.11.25</span></div>
+                    <div class="date-box plan"><span class="date-label">План</span><span class="date-value">30.11.25</span></div>
+                  </div>
+                  <div class="meta"><span>ID 3186</span><span>Епашников Сергей Алексеевич</span></div>
+                </article>
+              </section>
+
+              <section class="column completed">
+                <div class="col-head"><span class="status">Исполненные</span><span class="count">5</span></div>
+                <article class="task red">
+                  <div class="badge-row"><span class="badge overdue">Просрочено: 84 дн.</span></div>
+                  <div class="task-title">Комплексная доработка модуля «Служебные записки»</div>
+                  <div class="dates">
+                    <div class="date-box"><span class="date-label">Старт</span><span class="date-value">14.11.25</span></div>
+                    <div class="date-box plan"><span class="date-label">План</span><span class="date-value">15.12.25</span></div>
+                  </div>
+                  <div class="meta"><span>ID 3161</span><span>Даркенбай Шынгыс Адилулы</span></div>
+                </article>
+              </section>
+            </div>
+          </main>
+        </div>
+      </article>
+    </section>
+
+    <section class="spec">
+      <div>
+        <h3>Поведение компонентов</h3>
+        <div class="spec-list">
+          <div><b>Каталог меню:</b> стрелка вправо = свернуто; при раскрытии поворот вниз; клик повторно сворачивает.</div>
+          <div><b>Свернутое меню:</b> только иконки, одинаковый размер и одинаковые вертикальные интервалы (без прыжков).</div>
+          <div><b>Личный кабинет / Мои документы:</b> по умолчанию показываются активные и pinned-пункты; «Показать все» раскрывает все, но не ломает baseline-логику.</div>
+          <div><b>Pin:</b> закрепляет пункт независимо от счетчика; pinned не скрывается.</div>
+          <div><b>Drag&amp;Drop (4 типа доков):</b> зона слева в navbar; во время drag активный элемент приподнят, целевой слот подсвечивается индикатором before/after.</div>
+          <div><b>Карточки Kanban:</b> overdue всегда в формате «Просрочено: N дн.»; для action-сценариев красный счетчик/статус.</div>
+          <div><b>Темы:</b> Light и Dark используют одинаковую геометрию, только палитра и контраст адаптированы.</div>
+        </div>
+        <div class="hint" style="margin-top:10px;">
+          Рекомендация для разработчика: сохранять DnD-порядок и pinned-state в localStorage по ключам модуля; при ререндере сначала применять порядок, затем фильтрацию активных/неактивных пунктов.
+        </div>
+      </div>
+
+      <div>
+        <h3>Design tokens (для dev handoff)</h3>
+        <div class="token-grid">
+          <div class="token"><b>Outer radius</b><span>16px (`--kanban-r-outer`)</span></div>
+          <div class="token"><b>Column radius</b><span>14px (`--kanban-r-column`)</span></div>
+          <div class="token"><b>Card radius</b><span>12px (`--kanban-r-card`)</span></div>
+          <div class="token"><b>Inner radius</b><span>10px (`--kanban-r-inner`)</span></div>
+          <div class="token"><b>Spacing XS</b><span>4px (`--kanban-space-1`)</span></div>
+          <div class="token"><b>Spacing S</b><span>8px (`--kanban-space-2`)</span></div>
+          <div class="token"><b>Spacing M</b><span>12px (`--kanban-space-3`)</span></div>
+          <div class="token"><b>Spacing L</b><span>16px (`--kanban-space-4`)</span></div>
+          <div class="token"><b>Spacing XL</b><span>24px (`--kanban-space-5`)</span></div>
+          <div class="token"><b>Menu item height</b><span>36px (`--mainmenu-link-height`=2.25rem)</span></div>
+          <div class="token"><b>Menu item gap</b><span>2px (`--mainmenu-item-gap`=0.125rem)</span></div>
+          <div class="token"><b>Board paddings</b><span>12px top/right/bottom/left (симметрия)</span></div>
+        </div>
+        <div class="hint" style="margin-top:10px;">
+          Сетка: канбан-колонки и карточки в обеих темах используют одинаковые отступы. Визуальный контраст достигается цветом заливки и бордера, без изменения размеров.
+        </div>
+      </div>
+    </section>
+  </div>
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</body>
+</html>

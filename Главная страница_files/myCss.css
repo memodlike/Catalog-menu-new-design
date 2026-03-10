@@ -2399,10 +2399,10 @@ body.mini-navbar .navbar-default .nav li a span.count{
 }
 
 #kanban-navbar {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 16px;
+    margin-bottom: 14px;
     display: flex;
-    gap: 12px;
+    gap: 10px;
     align-items: center;
     flex-wrap: nowrap;
 }
@@ -2458,14 +2458,15 @@ body.mini-navbar .navbar-default .nav li a span.count{
 }
 
 #kanban-navbar button {
-    border-radius: 12px;
+    border-radius: 14px;
     color: var(--kanban-nav-buttons-text-color);
     background-color: var(--kanban-nav-buttons-background-color);
     border-color: var(--kanban-nav-buttons-border-color);
     font-size: 0.875rem;
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 18px;
+    padding-right: 18px;
     height: 40px;
+    min-height: 40px;
 }
 
 #kanban-navbar button.tasktype-draggable {
@@ -2482,10 +2483,10 @@ body.mini-navbar .navbar-default .nav li a span.count{
     top: -8px;
     right: -8px;
     transform: none;
-    min-width: 24px;
+    min-width: 20px;
     height: 20px;
-    padding: 0 8px;
-    border-radius: 999px;
+    padding: 0 6px;
+    border-radius: 10px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -3115,6 +3116,28 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
 
 #header .brand .brand-logo {
     margin-left: 0 !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+
+#header .brand .brand-logo .brand-mark {
+    width: 46px;
+    height: 46px;
+    display: block;
+}
+
+#header .brand .brand-logo .brand-wordmark {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    color: #16a34a;
+}
+
+.dark-mode #header .brand .brand-logo .brand-wordmark {
+    color: #3dd37a;
 }
 
 #app .app-sidebar,
@@ -3150,27 +3173,31 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
 #mainmenu > .menu-header .menu-header-toggle {
     border: 0;
     background: transparent;
-    color: var(--layout-font-color-1);
-    width: 1.5rem;
-    height: 1.5rem;
-    min-width: 1.5rem;
-    border-radius: 0.4rem;
+    color: var(--layout-font-color-2);
+    width: 1.2rem;
+    height: 1.2rem;
+    min-width: 1.2rem;
+    border-radius: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 0;
     margin-left: auto;
-    transition: color 0.2s ease, background-color 0.2s ease, transform 0.25s ease;
+    box-shadow: none;
+    transition: color 0.16s ease, opacity 0.16s ease, transform 0.18s ease;
 }
 
 #mainmenu > .menu-header .menu-header-toggle i {
-    font-size: 1rem;
+    font-size: 1.1rem;
     line-height: 1;
+    transition: transform 0.18s ease;
 }
 
 #mainmenu > .menu-header .menu-header-toggle:hover {
-    color: var(--layout-font-color-2);
-    background: rgba(60, 78, 113, 0.1);
+    color: #2f6cec;
+    background: transparent;
+    box-shadow: none;
+    opacity: 0.9;
 }
 
 .dark-mode #mainmenu > .menu-header {
@@ -3181,10 +3208,23 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
     background: rgba(191, 213, 255, 0.16);
 }
 
+.dark-mode #mainmenu > .menu-header .menu-header-toggle {
+    color: #d8e5ff;
+    background: transparent;
+    box-shadow: none;
+}
+
 #app.app-sidebar-minified #mainmenu > .menu-header.menu-header-row {
     justify-content: center;
     padding-left: 0;
     padding-right: 0;
+}
+
+#app.app-sidebar-minified #mainmenu > .menu-header {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    display: flex;
+    justify-content: center;
 }
 
 #app.app-sidebar-minified #mainmenu > .menu-header .menu-header-title {
@@ -3195,6 +3235,9 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
 
 #app.app-sidebar-minified #mainmenu > .menu-header .menu-header-toggle {
     margin-left: 0;
+    margin-right: 0;
+    margin-inline: auto;
+    transform: none;
 }
 
 #mainmenu .menu-item.has-sub > .menu-link .menu-caret {
@@ -3220,25 +3263,27 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
     border: none;
     background: transparent;
     color: var(--layout-font-color-1);
-    opacity: 0.55;
+    opacity: 0.62;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1rem;
-    height: 1rem;
-    margin-right: 0.3rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-right: 0.2rem;
     border-radius: 0.25rem;
-    transition: color 0.2s ease, opacity 0.2s ease;
+    padding: 0;
+    transition: color 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
 }
 
 #mainmenu .menu-pin-btn i {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     line-height: 1;
 }
 
 #mainmenu .menu-pin-btn:hover {
     color: var(--layout-font-color-2);
-    opacity: 0.9;
+    opacity: 0.92;
+    background: rgba(60, 78, 113, 0.09);
 }
 
 #mainmenu .menu-pin-btn.is-pinned {
@@ -3330,6 +3375,36 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
     justify-content: center;
 }
 
+#mainmenu .menu-item > .menu-link .menu-icon {
+    position: relative;
+}
+
+#mainmenu .menu-item > .menu-link .menu-icon .menu-icon-label {
+    position: absolute;
+    top: -0.34rem;
+    right: -0.38rem;
+    min-width: 1.02rem;
+    height: 1.02rem;
+    padding: 0 0.22rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0;
+    color: #fff;
+    background: linear-gradient(180deg, #ff9152 0%, #ff6144 100%);
+    border: 1px solid rgba(255, 255, 255, 0.92);
+    box-shadow: 0 2px 6px rgba(255, 97, 68, 0.32);
+}
+
+.dark-mode #mainmenu .menu-item > .menu-link .menu-icon .menu-icon-label {
+    border-color: rgba(36, 52, 80, 0.88);
+    box-shadow: 0 2px 7px rgba(255, 97, 68, 0.42);
+}
+
 #mainmenu .menu-item.menu-smart-hidden,
 .app-float-submenu .menu-item.menu-smart-hidden {
     display: none !important;
@@ -3362,8 +3437,8 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
 }
 
 #app.app-sidebar-minified #mainmenu > .menu-item > .menu-link .menu-icon .menu-icon-label {
-    top: -0.25rem;
-    right: -0.3rem;
+    top: -0.32rem;
+    right: -0.34rem;
 }
 
 .app-float-submenu {
@@ -3413,13 +3488,17 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
 }
 
 .app-float-submenu .menu-icon {
-    width: 1.25rem !important;
+    width: auto !important;
     height: 1.25rem !important;
     min-width: 1.25rem;
     min-height: 1.25rem;
+    max-width: none;
     font-size: 1.25rem !important;
-    flex: 0 0 1.25rem;
+    flex: 0 0 auto;
     line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
 }
 
 .app-float-submenu .menu-icon + .menu-text {
@@ -3427,15 +3506,63 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
 }
 
 .app-float-submenu .menu-icon .menu-icon-label {
-    top: -0.2rem;
-    right: -0.28rem;
-    min-width: 0.875rem;
-    min-height: 0.875rem;
-    font-size: 0.56rem;
+    position: static;
+    transform: translateY(-0.22rem);
+    min-width: 1.02rem;
+    height: 1.02rem;
+    padding: 0 0.25rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #ff8e3b 0%, #ff5a49 100%);
+    color: #fff;
+    font-size: 0.64rem;
+    font-weight: 700;
+    line-height: 1;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 6px rgba(255, 90, 73, 0.35);
 }
 
 .app-float-submenu .menu-smart-toggle-row {
-    display: none !important;
+    display: block !important;
+    margin-top: 0.12rem;
+    padding: 0.22rem 0.28rem 0.08rem 0.28rem;
+}
+
+.app-float-submenu .menu-smart-toggle-btn {
+    border: 1px solid rgba(60, 78, 113, 0.18);
+    background: rgba(60, 78, 113, 0.06);
+    color: var(--layout-font-color-2);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    border-radius: 0.52rem;
+    height: 1.45rem;
+    line-height: 1.45rem;
+    width: 100%;
+    text-align: center;
+    padding: 0 0.45rem;
+    transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease, transform 0.14s ease;
+}
+
+.app-float-submenu .menu-smart-toggle-btn:hover {
+    background: rgba(47, 108, 236, 0.1);
+    border-color: rgba(47, 108, 236, 0.28);
+    color: #2f6cec;
+    transform: translateY(-1px);
+}
+
+.dark-mode .app-float-submenu .menu-smart-toggle-btn {
+    border-color: rgba(173, 189, 220, 0.24);
+    background: rgba(173, 189, 220, 0.09);
+    color: #dbe7ff;
+}
+
+.dark-mode .app-float-submenu .menu-smart-toggle-btn:hover {
+    background: rgba(117, 166, 255, 0.16);
+    border-color: rgba(117, 166, 255, 0.3);
+    color: #9ec0ff;
 }
 
 .app-float-submenu .menu-item.has-sub > .menu-link .menu-caret i {
@@ -3455,14 +3582,61 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
 }
 
 .app-float-submenu .menu-pin-btn {
-    width: 0.95rem;
-    height: 0.95rem;
-    margin-right: 0.25rem;
-    opacity: 0.48;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.1rem;
+    opacity: 0.7;
+    color: var(--layout-font-color-1);
+    border-radius: 0.25rem;
+    flex: 0 0 1rem;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+}
+
+.app-float-submenu .menu-pin-btn i {
+    font-size: 0.84rem;
+}
+
+.app-float-submenu .menu-pin-btn:hover {
+    opacity: 0.96;
+    color: var(--layout-font-color-2);
+    background: transparent;
 }
 
 .app-float-submenu .menu-pin-btn.is-pinned {
-    opacity: 0.95;
+    opacity: 1;
+    color: #2f6cec;
+    background: transparent;
+}
+
+.dark-mode .app-float-submenu .menu-icon .menu-icon-label {
+    border-color: rgba(34, 50, 76, 0.82);
+    box-shadow: 0 2px 6px rgba(255, 95, 73, 0.4);
+}
+
+.dark-mode .app-float-submenu .menu-pin-btn:hover {
+    background: transparent;
+}
+
+.dark-mode .app-float-submenu .menu-pin-btn.is-pinned {
+    color: #9ec0ff;
+    background: transparent;
+}
+
+.menu-item.menu-smart-animate-in {
+    animation: smartItemReveal 150ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@keyframes smartItemReveal {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes floatMenuIn {

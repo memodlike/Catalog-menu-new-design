@@ -1461,7 +1461,7 @@ $(function(){
         'Документы': true
     };
     var SMART_MENU_STORAGE_KEY = 'mainMenu.smartSections.v1';
-    var MENU_ANIMATION_MS = 180;
+    var MENU_ANIMATION_MS = 140;
     var smartMenuSectionIds = SMART_MENU_SECTION_DEFAULT_IDS.slice();
     var dragContext = {
         sectionId: null,
@@ -1903,14 +1903,36 @@ $(function(){
 
     function bindSmartMenuEvents() {
         $(document)
-            .off('click.mainMenuSmartPin', '#mainmenu .menu-pin-btn')
-            .on('click.mainMenuSmartPin', '#mainmenu .menu-pin-btn', function (e) {
+            .off('mouseenter.mainMenuSmartShowAllReset', '#mainmenu > .menu-item.has-sub')
+            .on('mouseenter.mainMenuSmartShowAllReset', '#mainmenu > .menu-item.has-sub', function () {
+                if (!$('#app').hasClass('app-sidebar-minified')) {
+                    return;
+                }
+
+                var sectionId = String($(this).attr('data-elementid') || '');
+                if (!isSmartMenuSection(sectionId) || !getSmartSectionShowAll(sectionId)) {
+                    return;
+                }
+
+                resetSmartSectionShowAll(sectionId);
+                renderSmartMenuSection(sectionId);
+            });
+
+        $(document)
+            .off('click.mainMenuSmartPin', '#mainmenu .menu-pin-btn, .app-float-submenu .menu-pin-btn')
+            .on('click.mainMenuSmartPin', '#mainmenu .menu-pin-btn, .app-float-submenu .menu-pin-btn', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
 
                 var $item = $(this).closest('.menu-item');
-                var $section = $item.closest('#mainmenu > .menu-item');
-                var sectionId = String($section.attr('data-elementid') || '');
+                var sectionId = String($(this).closest('[data-sectionid]').attr('data-sectionid') || '');
+                if (!sectionId) {
+                    sectionId = String($item.closest('.menu-submenu').attr('data-parentid') || '');
+                }
+                if (!sectionId) {
+                    var $section = $item.closest('#mainmenu > .menu-item');
+                    sectionId = String($section.attr('data-elementid') || '');
+                }
                 var itemId = String($item.attr('data-elementid') || '');
 
                 if (!isSmartMenuSection(sectionId) || !itemId) {
@@ -1934,8 +1956,8 @@ $(function(){
             });
 
         $(document)
-            .off('click.mainMenuSmartToggle', '#mainmenu .menu-smart-toggle-btn')
-            .on('click.mainMenuSmartToggle', '#mainmenu .menu-smart-toggle-btn', function (e) {
+            .off('click.mainMenuSmartToggle', '#mainmenu .menu-smart-toggle-btn, .app-float-submenu .menu-smart-toggle-btn')
+            .on('click.mainMenuSmartToggle', '#mainmenu .menu-smart-toggle-btn, .app-float-submenu .menu-smart-toggle-btn', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
 
@@ -1944,8 +1966,42 @@ $(function(){
                     return;
                 }
 
+                var $section = $('#mainmenu > .menu-item[data-elementid="' + sectionId + '"]');
+                var $submenu = $section.children('.menu-submenu');
+                var hiddenBefore = {};
+                $submenu.children('.menu-item.menu-smart-hidden').each(function () {
+                    var itemId = String($(this).attr('data-elementid') || '');
+                    if (itemId) {
+                        hiddenBefore[itemId] = true;
+                    }
+                });
+
                 setSmartSectionShowAll(sectionId, !getSmartSectionShowAll(sectionId));
                 renderSmartMenuSection(sectionId);
+
+                $submenu.children('.menu-item').each(function () {
+                    var $item = $(this);
+                    var itemId = String($item.attr('data-elementid') || '');
+                    if (!itemId || $item.hasClass('menu-smart-hidden') || !hiddenBefore[itemId]) {
+                        return;
+                    }
+                    $item.removeClass('menu-smart-animate-in');
+                    void $item[0].offsetWidth;
+                    $item.addClass('menu-smart-animate-in');
+                });
+
+                if ($(this).closest('.app-float-submenu').length) {
+                    var $floatMenu = $(this).closest('.app-float-submenu');
+                    var $sourceSubmenu = $('#mainmenu > .menu-item[data-elementid="' + sectionId + '"] > .menu-submenu').first();
+                    if ($sourceSubmenu.length && $floatMenu.length) {
+                        var $floatSubmenu = $floatMenu.is('.menu-submenu') ? $floatMenu : $floatMenu.find('.menu-submenu').first();
+                        if ($floatSubmenu.length) {
+                            $floatSubmenu.html($sourceSubmenu.html());
+                        } else {
+                            $floatMenu.html($sourceSubmenu.html());
+                        }
+                    }
+                }
             });
 
         $(document)
@@ -2089,9 +2145,9 @@ $(function(){
                 }
 
                 siblingMenus.removeClass('expand');
-                siblingMenus.children('.menu-submenu:visible').slideUp(MENU_ANIMATION_MS);
+                siblingMenus.children('.menu-submenu:visible').stop(true, false).slideUp(MENU_ANIMATION_MS);
 
-                target.stop(true, true).slideToggle(MENU_ANIMATION_MS);
+                target.stop(true, false).slideToggle(MENU_ANIMATION_MS);
                 targetElm.toggleClass('expand', openState);
 
                 if (isSmartMenuSection(targetSectionId)) {

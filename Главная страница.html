@@ -92,8 +92,8 @@
     <!-- BEGIN brand -->
     <div class="brand">
         <a href="https://bccinsurance.sinoasia.kz/Home/Index" class="brand-logo">
-            <img style="margin-top:2px;margin-left:0;max-height: 150%;max-width: 150%;" src="./Главная страница_files/centercredit-2.png" alt="">
-                    
+            <img class="brand-mark" src="./Главная страница_files/frame_1948754667.svg" alt="">
+            <span class="brand-wordmark">sabr Insurance</span>
         </a>
     </div>
             <div class="mobile-brand d-block d-md-none">
@@ -1899,6 +1899,15 @@
     }
 
     :root {
+        --kanban-r-outer: 16px;
+        --kanban-r-column: 14px;
+        --kanban-r-card: 12px;
+        --kanban-r-inner: 10px;
+        --kanban-space-1: 4px;
+        --kanban-space-2: 8px;
+        --kanban-space-3: 12px;
+        --kanban-space-4: 16px;
+        --kanban-space-5: 24px;
         --kanban-shell-bg: #eef3fc;
         --kanban-shell-border: #d5deef;
         --kanban-card-bg: #ffffff;
@@ -1943,7 +1952,7 @@
     }
 
     #kanbanContainer {
-        margin-top: 8px;
+        margin-top: 0;
         padding: 12px;
         box-sizing: border-box;
         font-family: "Inter", "Segoe UI", sans-serif;
@@ -1952,7 +1961,7 @@
     #kanbanContainer .board {
         display: grid;
         grid-template-columns: repeat(4, minmax(300px, 1fr));
-        gap: 13px;
+        gap: var(--kanban-space-3);
         align-items: stretch;
         width: 100%;
     }
@@ -1972,8 +1981,8 @@
     #kanbanContainer .column {
         background: var(--kanban-shell-bg);
         border: 1px solid var(--kanban-shell-border);
-        border-radius: 12px;
-        padding: 12px;
+        border-radius: var(--kanban-r-column);
+        padding: var(--kanban-space-3);
         min-height: 888px;
         display: flex;
         flex-direction: column;
@@ -2024,18 +2033,22 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
     }
 
     #kanbanContainer .kanban-header .status-title,
     #kanbanContainer .kanban-header .status-count {
-        border-radius: 20px;
-        padding: 5px 12px;
+        height: 32px;
+        border-radius: 16px;
+        padding: 0 14px;
         font-weight: 700;
         font-size: 14px;
         line-height: 17px;
         letter-spacing: 0;
         border: 1px solid transparent;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     #kanbanContainer .kanban-header.new .status-title,
@@ -2100,14 +2113,14 @@
         flex-grow: 0;
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 10px;
     }
 
     #kanbanContainer .column-filler {
         flex-grow: 1;
-        border-radius: 12px;
+        border-radius: var(--kanban-r-column);
         margin: 0;
-        margin-top: 12px;
+        margin-top: 10px;
         border: 1px solid transparent;
         min-height: 0;
         box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
@@ -2167,8 +2180,8 @@
         position: relative;
         background: var(--kanban-card-bg);
         border: 1px solid var(--kanban-card-border);
-        border-radius: 12px;
-        padding: 12px;
+        border-radius: var(--kanban-r-card);
+        padding: var(--kanban-space-3);
         margin-bottom: 0;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.28);
         color: var(--kanban-title-color);
@@ -2193,8 +2206,8 @@
         position: relative;
         display: flex;
         align-items: center;
-        gap: 8px;
-        margin: 20px 0 0;
+        gap: var(--kanban-space-2);
+        margin: 16px 0 0;
         width: 100%;
     }
 
@@ -2205,7 +2218,7 @@
         height: 37px;
         background: var(--kanban-date-bg);
         border: 1px solid var(--kanban-date-border);
-        border-radius: 10px;
+        border-radius: var(--kanban-r-inner);
         color: var(--kanban-date-text);
         font-weight: 700;
         font-size: 16px;
@@ -2269,11 +2282,16 @@
         display: flex !important;
         justify-content: space-between !important;
         align-items: center;
-        gap: 8px;
-        margin-top: 16px;
+        gap: var(--kanban-space-2);
+        margin-top: 12px;
         color: var(--kanban-meta-color);
         font-size: 13px;
         line-height: 16.9px;
+    }
+
+    #kanbanContainer .task.overdue,
+    #kanbanContainer .task.action-required {
+        padding-top: 20px;
     }
 
     #kanbanContainer .task > div:last-child > div:first-child {
@@ -2321,11 +2339,11 @@
         background: #e28322;
         color: #ffffff;
         border: 2px solid #fff1db;
-        border-radius: 20px;
+        border-radius: var(--kanban-r-inner);
         font-size: 10px;
         font-weight: 700;
         line-height: 12px;
-        padding: 3px 10px;
+        padding: 4px 10px;
         box-shadow: 0 2px 8px rgba(226, 131, 34, 0.35);
         white-space: nowrap;
         z-index: 3;
@@ -2359,12 +2377,12 @@
         transform: translateX(-50%);
         background: #f97316;
         color: #ffffff;
-        border-radius: 12px;
+        border-radius: var(--kanban-r-inner);
         font-size: 8px;
         font-weight: 700;
         line-height: 10px;
         letter-spacing: 0;
-        padding: 1px 8px;
+        padding: 4px 10px;
         box-shadow: 0 2px 6px rgba(249, 148, 22, 0.32);
     }
 
@@ -2376,11 +2394,11 @@
         background: #ff3b30;
         color: #ffffff;
         border: 2px solid #ffffff;
-        border-radius: 20px;
+        border-radius: var(--kanban-r-inner);
         font-size: 10px;
         font-weight: 700;
         line-height: 12px;
-        padding: 3px 10px;
+        padding: 4px 10px;
         box-shadow: 0 2px 8px rgba(255, 59, 48, 0.4);
         white-space: nowrap;
         z-index: 3;
@@ -2718,7 +2736,7 @@
  
     <!-- BEGIN #footer -->
 <div id="footer" class="app-footer">
-    © 2026 BCC Insurance
+    © 2026 SABR
 </div>
 <!-- END #footer -->
 
