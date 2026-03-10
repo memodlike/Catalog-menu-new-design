@@ -268,18 +268,18 @@ table tr{
     }
 
 #nestable2 .dd-item > button {
-    font-family: FontAwesome;
+    font-family: tabler-icons;
     height: 34px;
     width: 33px;
     color: #c1c1c1;
 }
 
     #nestable2 .dd-item > button:before {
-        content: "\f067";
+        content: "+";
     }
 
     #nestable2 .dd-item > button[data-action="collapse"]:before {
-        content: "\f068";
+        content: "-";
     }
 
 .dd-placeholder,
@@ -375,7 +375,7 @@ table tr{
 /* #nestable3 .dd-item > button {
     display: flex;
     align-items: center;
-    font-family: FontAwesome;
+    font-family: tabler-icons;
     height: 34px;
     width: 33px;
     color: #000000;
@@ -385,7 +385,7 @@ table tr{
     justify-content: center;
 }
 .dark-mode #nestable3 .dd-item > button {
-    font-family: FontAwesome;
+    font-family: tabler-icons;
     height: 34px;
     width: 33px;
     color: #EBEEF4;
@@ -397,9 +397,9 @@ table tr{
     justify-content: center;
 } */
 #nestable3 .dd-item > button:before {
-    content: "\f0da";
+    content: "▸";
     color: #000000;
-    font-family: FontAwesome;
+    font-family: tabler-icons;
     font-size: 1rem;
     line-height: 1;
     display: flex;
@@ -408,9 +408,9 @@ table tr{
     height: 100%;
 }
 .dark-mode #nestable3 .dd-item > button:before {
-    content: "\f0da";
+    content: "▸";
     color: #EBEEF4;
-    font-family: FontAwesome;
+    font-family: tabler-icons;
     font-size: 1rem;
     line-height: 1;
     display: flex;
@@ -420,7 +420,7 @@ table tr{
 }
 
     #nestable3 .dd-item > button[data-action="collapse"]:before {
-        content: "\f0d7";
+        content: "▾";
     }
 
     #nestable3 .dd-item > button[data-action="empty"]:before {

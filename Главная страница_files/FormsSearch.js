@@ -82,8 +82,8 @@ function getAuxsrcArrayValues() {
 function PreInitPage(formtype, formtable) {
     // цепляем иконку чекера в заголовок формы
     if ($("#TABLE_WARNING_STATE").val() == "True")
-        $("#checker_icon").addClass("fa fa-exclamation-triangle ch-warning");
-    else $("#checker_icon").addClass("fa fa-check-circle ch-ok");
+        $("#checker_icon").addClass("ti ti-alert-triangle ch-warning");
+    else $("#checker_icon").addClass("ti ti-circle-check ch-ok");
 
    
 
@@ -156,7 +156,7 @@ function PreInitPage(formtype, formtable) {
 
             var str = "";
             //берем элементы, что есть в базе, но скрыты сейчас и текущие звёзды
-            $("i.elemaccess.fromdb.fa-star-o").add("i.elemaccess.fromdb.fa-star-half-o").add("i.elemaccess.fa-star").each(function () {
+            $("i.elemaccess.fromdb.ti-star").add("i.elemaccess.fromdb.ti-star-half").add("i.elemaccess.ti-star-filled").each(function () {
                 str += getUpdateAccessString($(this));
             });
 
@@ -206,15 +206,15 @@ function PreInitPage(formtype, formtable) {
 function getUpdateAccessString(elem) {
     var str = "";
     //если имеем дело с установленным СВЕТОМ
-    if (!elem.hasClass('fromdb') && elem.hasClass('fa-star')) {
+    if (!elem.hasClass('fromdb') && elem.hasClass('ti-star-filled')) {
         //обновляем, если в базе уже есть запись для айди элемента, иначе вставляем
         str += elem.data('parentid') + "," + elem.data('type') + "," + ($("i.elemaccess[data-parentid='" + elem.data('parentid') + "'].fromdb").length > 0 ? 2 : 1) + "#";
     }
 
     //если было в базе и теперь нет СВЕТА, или наследует СВЕТ элемент помеченный ИЗ БАЗЫ, то нужно удалить запись для этого элемента
-    if ((elem.hasClass('fa-star-o') || elem.hasClass('fa-star-half-o'))
+    if ((elem.hasClass('ti-star') || elem.hasClass('ti-star-half'))
         && elem.hasClass('fromdb')
-        && !$("i.elemaccess[data-parentid='" + elem.data('parentid') + "'].fa-star").length > 0
+        && !$("i.elemaccess[data-parentid='" + elem.data('parentid') + "'].ti-star-filled").length > 0
     ) {
         str += elem.data('parentid') + ",0,3#";
     }
@@ -375,13 +375,13 @@ function InitPage(element, clickedobject) {
 
                      /*   $('.addArea').on('click', function () {
                             var span = $(this).find('.innerIcon');
-                            if (span.hasClass('fa-plus')) {
-                                span.removeClass('fa-plus');
-                                span.addClass('fa-minus');
+                            if (span.hasClass('ti-plus')) {
+                                span.removeClass('ti-plus');
+                                span.addClass('ti-minus');
                                 $('#innerDiv'+$(this).data('id')).show();
                             } else {
-                                span.addClass('fa-plus');
-                                span.removeClass('fa-minus');
+                                span.addClass('ti-plus');
+                                span.removeClass('ti-minus');
                                 $('#innerDiv' + $(this).data('id')).hide();
                             }
                             //setSelect2ContainerWidth();
@@ -697,8 +697,8 @@ function loadIerarhViewPartial(div_or_ol, p_parentid, p_param, url, p_parenttabl
             if ($("i.elemcancel[data-parentid='" + p_parentid + "']").length > 0) {
 
                 //если текущий элемент имеет собственный СВЕТ, то просто обновляем его дочернюю структуру
-                if ($("i.elemaccess[data-parentid='" + p_parentid + "'].fa-star").length > 0) {
-                    var elem = $("i.elemaccess[data-parentid='" + p_parentid + "'].fa-star");
+                if ($("i.elemaccess[data-parentid='" + p_parentid + "'].ti-star-filled").length > 0) {
+                    var elem = $("i.elemaccess[data-parentid='" + p_parentid + "'].ti-star-filled");
                     do_inherit(elem, elem.data('type'));
                 } else //иначе находим ближайший свет родителя и обновляем его дочернюю структуру
                 {
@@ -714,10 +714,10 @@ function loadIerarhViewPartial(div_or_ol, p_parentid, p_param, url, p_parenttabl
                     var elem1 = $(this);
                     var flag = true;
                     //если элемент имеет звезду, то при её отмене находим ближайшего родителя со светом и производим наследование
-                    if (elem1.hasClass('fa-star')) {
+                    if (elem1.hasClass('ti-star-filled')) {
                         if (elem1.hasClass('fromdb')) flag = false;
-                        elem1.removeClass('fa-star');
-                        elem1.addClass('fa-star-o');
+                        elem1.removeClass('ti-star-filled');
+                        elem1.addClass('ti-star');
                         if ((!$("i.elemaccess[data-parentid='" + elem.data('parentid') + "'].fromdb").length > 0) || elem1.hasClass('fromdb')) {
 
                             find_parent_do_inherit(elem, true);
@@ -725,10 +725,10 @@ function loadIerarhViewPartial(div_or_ol, p_parentid, p_param, url, p_parenttabl
                     }
 
                     //если изначально из базы был СВЕТ, то при попытке удалить клиентский свет, сначала восстанавливаем свет из базы
-                    if (elem1.hasClass('fromdb') && !elem1.hasClass('fa-star') && flag) {
-                        elem1.removeClass('fa-star-o');
-                        elem1.removeClass('fa-star-half-o');
-                        elem1.addClass('fa-star');
+                    if (elem1.hasClass('fromdb') && !elem1.hasClass('ti-star-filled') && flag) {
+                        elem1.removeClass('ti-star');
+                        elem1.removeClass('ti-star-half');
+                        elem1.addClass('ti-star-filled');
 
                         do_inherit(elem1, elem1.data('type'));
                     }
@@ -742,34 +742,34 @@ function loadIerarhViewPartial(div_or_ol, p_parentid, p_param, url, p_parenttabl
                 $("i.elemaccess[data-grandparentid='" + elem.data('grandparentid') + "']").each(function () {
                     var elem1 = $(this);
                     //проставляем для не себя уровень доступа СКРЫТО
-                    if (elem1.hasClass('fa-star-o') && elem.data('parentid') != elem1.data('parentid') && elem1.data('type') == 3) {
+                    if (elem1.hasClass('ti-star') && elem.data('parentid') != elem1.data('parentid') && elem1.data('type') == 3) {
                         //исключая случай, когда стоит конкретный уровень доступа (ПОЛНАЯ ЗВЕЗДА)
-                        if (!$("i.elemaccess[data-parentid='" + elem1.data('parentid') + "'].fa-star").length > 0) {
-                            elem1.removeClass('fa-star-o');
-                            elem1.addClass('fa-star-half-o');
+                        if (!$("i.elemaccess[data-parentid='" + elem1.data('parentid') + "'].ti-star-filled").length > 0) {
+                            elem1.removeClass('ti-star');
+                            elem1.addClass('ti-star-half');
                         }
                     }
 
                     //убираем наследия на братьях с уровенем отличным от СКРЫТО
-                    if (elem1.hasClass('fa-star-half-o') && elem.data('parentid') != elem1.data('parentid') && elem1.data('type') != 3) {
-                        elem1.removeClass('fa-star-half-o');
-                        elem1.addClass('fa-star-o');
+                    if (elem1.hasClass('ti-star-half') && elem.data('parentid') != elem1.data('parentid') && elem1.data('type') != 3) {
+                        elem1.removeClass('ti-star-half');
+                        elem1.addClass('ti-star');
                     }
 
                     //проставляем ПОЛНУЮ ЗВЕЗДУ на кликнутом элементе, если он уже не имеет ПОЛНУЮ ЗВЕЗДУ
-                    if ((elem1.hasClass('fa-star-half-o') || elem1.hasClass('fa-star-o')) && elem.data('parentid') == elem1.data('parentid') && elem1.data('type') == elem.data('type')) {
-                        elem1.removeClass('fa-star-half-o');
-                        elem1.removeClass('fa-star-o');
-                        elem1.addClass('fa-star');
+                    if ((elem1.hasClass('ti-star-half') || elem1.hasClass('ti-star')) && elem.data('parentid') == elem1.data('parentid') && elem1.data('type') == elem.data('type')) {
+                        elem1.removeClass('ti-star-half');
+                        elem1.removeClass('ti-star');
+                        elem1.addClass('ti-star-filled');
 
-                        $("i.elemcancel[data-parentid='" + elem1.data('parentid') + "']").addClass('fa-times');
+                        $("i.elemcancel[data-parentid='" + elem1.data('parentid') + "']").addClass('ti-x');
                     }
 
                     //очищаем другие звёзды текущего элемента
-                    if ((elem1.hasClass('fa-star-half-o') || elem1.hasClass('fa-star')) && elem.data('parentid') == elem1.data('parentid') && elem1.data('type') != elem.data('type')) {
-                        elem1.removeClass('fa-star-half-o');
-                        elem1.removeClass('fa-star');
-                        elem1.addClass('fa-star-o');
+                    if ((elem1.hasClass('ti-star-half') || elem1.hasClass('ti-star-filled')) && elem.data('parentid') == elem1.data('parentid') && elem1.data('type') != elem.data('type')) {
+                        elem1.removeClass('ti-star-half');
+                        elem1.removeClass('ti-star-filled');
+                        elem1.addClass('ti-star');
                     }
                 });
 
@@ -802,7 +802,7 @@ function find_parent_do_inherit(elem, changeCancelIcon) {
         //ищем свет предка
         $("i.elemaccess[data-parentid='" + p_elem.data('grandparentid') + "']").each(function () {
             p_elem = $(this);
-            if (p_elem.hasClass('fa-star')) {
+            if (p_elem.hasClass('ti-star-filled')) {
                 flag = false;
                 p_elem_star = p_elem;
             }
@@ -811,14 +811,14 @@ function find_parent_do_inherit(elem, changeCancelIcon) {
     } while (flag && i < 500);
 
     //если нужно убрать иконку ОТМЕНЫ при её нажатии
-    if (changeCancelIcon) $("i.elemcancel[data-parentid='" + elem.data('parentid') + "']").removeClass('fa-times');
+    if (changeCancelIcon) $("i.elemcancel[data-parentid='" + elem.data('parentid') + "']").removeClass('ti-x');
 
     //если свет предка найден, то наследуем его в дочернюю структуру
     if (p_elem_star != null) {
         do_inherit(p_elem_star, p_elem_star.data('type'));
     } else //иначе наследуем всем невидимость
     {
-        if (changeCancelIcon) $("i.elemaccess[data-parentid='" + elem.data('parentid') + "'][data-type='3']").removeClass('fa-star-o').addClass('fa-star-half-o');
+        if (changeCancelIcon) $("i.elemaccess[data-parentid='" + elem.data('parentid') + "'][data-type='3']").removeClass('ti-star').addClass('ti-star-half');
         do_inherit(p_elem, 3);
     }
 }
@@ -829,28 +829,28 @@ function do_inherit(elem, type) {
     $("i.elemaccess[data-grandparentid='" + elem.data('parentid') + "']").each(function () {
         var elem1 = $(this);
 
-        if (!$("i.elemaccess[data-grandparentid='" + elem.data('parentid') + "'].fa-star").length > 0) {
+        if (!$("i.elemaccess[data-grandparentid='" + elem.data('parentid') + "'].ti-star-filled").length > 0) {
 
-            if (elem1.data('type') == type && elem1.hasClass('fa-star-o')) {
-                elem1.removeClass('fa-star-o');
-                elem1.addClass('fa-star-half-o');
+            if (elem1.data('type') == type && elem1.hasClass('ti-star')) {
+                elem1.removeClass('ti-star');
+                elem1.addClass('ti-star-half');
                 do_inherit(elem1, type);
             }
 
-            if (elem1.data('type') == type && elem1.hasClass('fa-star-half-o')) {
+            if (elem1.data('type') == type && elem1.hasClass('ti-star-half')) {
                 do_inherit(elem1, type);
             }
 
-            if (elem1.data('type') != type && elem1.hasClass('fa-star-half-o')) {
-                elem1.removeClass('fa-star-half-o');
-                elem1.addClass('fa-star-o');
+            if (elem1.data('type') != type && elem1.hasClass('ti-star-half')) {
+                elem1.removeClass('ti-star-half');
+                elem1.addClass('ti-star');
             }
 
         } else if (elem1.data('type') == 3) {
 
-            if (!$("i.elemaccess[data-parentid='" + elem1.data('parentid') + "'].fa-star").length > 0) {
-                elem1.removeClass('fa-star-o');
-                elem1.addClass('fa-star-half-o');
+            if (!$("i.elemaccess[data-parentid='" + elem1.data('parentid') + "'].ti-star-filled").length > 0) {
+                elem1.removeClass('ti-star');
+                elem1.addClass('ti-star-half');
             }
             do_inherit(elem1, type);
         }

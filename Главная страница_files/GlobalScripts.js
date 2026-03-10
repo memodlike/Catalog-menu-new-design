@@ -1199,13 +1199,13 @@ function InitLookup() {
             if ($('.' + ParentLookUpClass + ' .insert_button').length) $('.' + ParentLookUpClass + ' .insert_button').show();
             if ($('.' + ParentLookUpClass + ' .btn-complete-search-history').length) $('.' + ParentLookUpClass + ' .btn-complete-search-history').show();
             $(this).data('lookupison', '1');
-            $(this).children('i').removeClass('fa-angle-left').addClass('fa-angle-right');
+            $(this).children('i').removeClass('ti-chevron-left').addClass('ti-chevron-right');
         } else {
             if ($('.' + ParentLookUpClass + ' .edit_button').length) $('.' + ParentLookUpClass + ' .edit_button').hide();
             if ($('.' + ParentLookUpClass + ' .insert_button').length) $('.' + ParentLookUpClass + ' .insert_button').hide();
             if ($('.' + ParentLookUpClass + ' .btn-complete-search-history').length) $('.' + ParentLookUpClass + ' .btn-complete-search-history').hide();
             $(this).data('lookupison', '0');
-            $(this).children('i').removeClass('fa-angle-right').addClass('fa-angle-left');
+            $(this).children('i').removeClass('ti-chevron-right').addClass('ti-chevron-left');
         }
     });
 

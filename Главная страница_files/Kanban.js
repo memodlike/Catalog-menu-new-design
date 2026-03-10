@@ -533,11 +533,11 @@ document.addEventListener("DOMContentLoaded", function () {
         let count = selectedPriorities.length;
 
         if (count > 0) {
-            userButton.innerHTML = `<i class='fas fa-sort-amount-down' style='color: blue;'></i> 
+            userButton.innerHTML = `<i class='ti ti-sort-descending' style='color: blue;'></i> 
                                 <span style='color: blue;'>Приоритет</span>`;
             userButton.classList.add('selected');
         } else {
-            userButton.innerHTML = `<i class='fas fa-sort-amount-down'></i> 
+            userButton.innerHTML = `<i class='ti ti-sort-descending'></i> 
                                 <span>Приоритет</span>`;
             userButton.classList.remove('selected');
         }
@@ -742,14 +742,14 @@ document.addEventListener("DOMContentLoaded", function () {
         let deptButton = document.getElementById('deptDropdown');
         let count = selectedDepts.size;
         if (count > 0) {
-            deptButton.innerHTML = `<i class='fas fa-dept' style='color: blue;'></i> 
+            deptButton.innerHTML = `<i class='ti ti-sitemap' style='color: blue;'></i> 
                                     <span style='color: blue;'>Выбрано (${count})</span> 
-                                    <i class='fas fa-bars' style='color: blue;'></i>`;
+                                    <i class='ti ti-menu-2' style='color: blue;'></i>`;
             deptButton.classList.add('selected');
         } else {
-            deptButton.innerHTML = `<i class='fas fa-dept'></i> 
+            deptButton.innerHTML = `<i class='ti ti-sitemap'></i> 
                                     <span>Выбрать подразделение</span> 
-                                    <i class='fas fa-bars'></i>`;
+                                    <i class='ti ti-menu-2'></i>`;
             deptButton.classList.remove('selected');
         }
     }
@@ -770,14 +770,14 @@ document.addEventListener("DOMContentLoaded", function () {
         let userButton = document.getElementById('userDropdown');
         let count = selectedUsers.size;
         if (count > 0) {
-            userButton.innerHTML = `<i class='fas fa-user' style='color: blue;'></i> 
+            userButton.innerHTML = `<i class='ti ti-user' style='color: blue;'></i> 
                                     <span style='color: blue;'>Выбрано (${count})</span> 
-                                    <i class='fas fa-bars' style='color: blue;'></i>`;
+                                    <i class='ti ti-menu-2' style='color: blue;'></i>`;
             userButton.classList.add('selected');
         } else {
-            userButton.innerHTML = `<i class='fas fa-user'></i> 
+            userButton.innerHTML = `<i class='ti ti-user'></i> 
                                     <span>Выбрать пользователя</span> 
-                                    <i class='fas fa-bars'></i>`;
+                                    <i class='ti ti-menu-2'></i>`;
             userButton.classList.remove('selected');
         }
     }

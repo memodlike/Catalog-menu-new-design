@@ -1758,7 +1758,12 @@ function Core_ShowValidationText(data) {
         // Core_ClearValidationError(divelement);
 
         var tbl = 'tbl_' + data[i].split('_')[2];
-        var ch = $('[id^="' + tbl + '"]').find('.ibox.float-e-margins').find('.ibox-title').find('.ibox-tools').find('.fa').hasClass('fa-chevron-up');
+        var icon = $('[id^="' + tbl + '"]')
+            .find('.ibox.float-e-margins')
+            .find('.ibox-title')
+            .find('.ibox-tools')
+            .find('.ti');
+        var ch = icon.hasClass('ti-chevron-up');
         //разворачиваем вкладку, в которой сработал валидатор
         if ($('[id^="' + tbl + '"]').length > 0 && !open_first && !ch) {
             $('.opened_tab').data('opened_id', 'undefined');
@@ -2849,13 +2854,13 @@ function CORE_InitAddHintArea() {
     $('.addArea').off('click');
     $('.addArea').on('click', function () {
         var span = $(this).find('.innerIcon');
-        if (span.hasClass('fa-plus')) {
-            span.removeClass('fa-plus');
-            span.addClass('fa-minus');
+        if (span.hasClass('ti-plus')) {
+            span.removeClass('ti-plus');
+            span.addClass('ti-minus');
             $('#innerDiv' + $(this).data('id')).show();
         } else {
-            span.addClass('fa-plus');
-            span.removeClass('fa-minus');
+            span.removeClass('ti-minus');
+            span.addClass('ti-plus');
             $('#innerDiv' + $(this).data('id')).hide();
         }
         //setSelect2ContainerWidth();
