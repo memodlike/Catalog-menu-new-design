@@ -18,7 +18,10 @@
       --space-4: 16px;
       --space-5: 24px;
 
-      --font-main: "Inter", "SF Pro Display", "Segoe UI", Arial, sans-serif;
+      --font-main: system-ui, -apple-system, "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-display: "Segoe UI Variable Display", "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-text: "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-small: "Segoe UI Variable Small", "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       --bg-page: #e3e7f0;
       --text-main: #1f2a44;
       --text-muted: #5f6f93;
@@ -58,6 +61,7 @@
     .head h1 {
       margin: 0 0 8px;
       font-size: 32px;
+      font-family: var(--font-display);
       font-weight: 800;
       letter-spacing: -0.02em;
     }
@@ -66,6 +70,7 @@
       margin: 0;
       color: #4f5f84;
       font-size: 16px;
+      font-family: var(--font-text);
     }
 
     .themes {

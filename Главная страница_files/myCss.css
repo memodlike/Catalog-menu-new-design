@@ -341,7 +341,7 @@ table tr{
     width: 100%;
     font-size: 0.75em;
     line-height: 1.333333em;
-    font-family: open sans, lucida grande, lucida sans unicode, helvetica, arial, sans-serif;
+    font-family: "Segoe UI Variable Small", "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     padding: 5px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -432,7 +432,7 @@ table tr{
     width: 100%;
     font-size: 0.75em;
     line-height: 1.333333em;
-    font-family: open sans, lucida grande, lucida sans unicode, helvetica, arial, sans-serif;
+    font-family: "Segoe UI Variable Small", "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     padding: 5px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -3700,7 +3700,7 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
 /*not minified*/
 .app-sidebar-mobile-toggled .app-sidebar .menu {
     background-color: var(--side-menu-background-color-new);
-    font-family: 'Roboto', sans-serif;
+    font-family: "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-size: 1rem;
 }
 

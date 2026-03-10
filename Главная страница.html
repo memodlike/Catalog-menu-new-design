@@ -44,7 +44,7 @@
   .confirm-overlay__dialog {
     position: relative; margin: 10vh auto 0; max-width: 420px; width: calc(100% - 32px);
     background: #fff; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,.2);
-    overflow: hidden; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    overflow: hidden; font-family: "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
   .confirm-overlay__header, .confirm-overlay__footer { padding: 12px 16px; display: flex; align-items: center; justify-content:flex-end; gap:8px; }
   .confirm-overlay__header { border-bottom: 1px solid #eee; justify-content: space-between; }
@@ -1767,7 +1767,10 @@
     }
 
     :root {
-        --bs-body-font-family: system-ui, -apple-system, "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+        --bs-body-font-family: system-ui, -apple-system, "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        --font-family-display: "Segoe UI Variable Display", "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        --font-family-text: "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        --font-family-small: "Segoe UI Variable Small", "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         --bs-font-sans-serif: var(--bs-body-font-family);
         --bs-font-monospace: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
@@ -1775,6 +1778,22 @@
     body {
         font-family: var(--bs-body-font-family);
         background-color: var(--bs-body-bg);
+    }
+
+    h1, .h1 {
+        font-family: var(--font-family-display);
+    }
+
+    h2, .h2, h3, .h3 {
+        font-family: var(--font-family-text);
+    }
+
+    label, .form-label {
+        font-family: var(--font-family-small);
+    }
+
+    .badge, .tooltip, .tooltip-inner, small, .small {
+        font-family: var(--font-family-small);
     }
 
 
@@ -1955,7 +1974,7 @@
         margin-top: 0;
         padding: 12px;
         box-sizing: border-box;
-        font-family: "Inter", "Segoe UI", sans-serif;
+        font-family: var(--font-family-text);
     }
 
     #kanbanContainer .board {

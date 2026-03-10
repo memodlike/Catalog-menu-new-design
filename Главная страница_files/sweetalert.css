@@ -18,7 +18,7 @@ body.stop-scrolling {
 
 .sweet-alert {
   background-color: white;
-  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   width: 478px;
   padding: 17px;
  border-radius: 0.75rem;
@@ -31,6 +31,8 @@ body.stop-scrolling {
   overflow: hidden;
   display: none;
   z-index: 99999; }
+  .sweet-alert h2 {
+    font-family: "Segoe UI Variable Display", "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
   @media all and (max-width: 540px) {
     .sweet-alert {
       width: auto;
