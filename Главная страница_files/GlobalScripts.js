@@ -1622,24 +1622,94 @@ $(function(){
         $('.app-float-submenu').remove();
     }
 
+    var isSidebarToggleAnimating = false;
+    var SIDEBAR_TOGGLE_ANIM_MS = 260;
+
+    function animateMainMenuLayoutFlip(onMutate) {
+        var $mainMenu = $('#mainmenu');
+        if (!$mainMenu.length || typeof onMutate !== 'function') {
+            onMutate && onMutate();
+            return;
+        }
+
+        var $nodes = $mainMenu.children('.menu-header, .menu-item');
+        if (!$nodes.length) {
+            onMutate();
+            return;
+        }
+
+        var beforeRects = [];
+        $nodes.each(function () {
+            beforeRects.push(this.getBoundingClientRect());
+        });
+
+        onMutate();
+
+        window.requestAnimationFrame(function () {
+            $mainMenu.addClass('menu-layout-animating');
+
+            $nodes.each(function (index) {
+                var before = beforeRects[index];
+                if (!before) {
+                    return;
+                }
+                var after = this.getBoundingClientRect();
+                var dx = before.left - after.left;
+                var dy = before.top - after.top;
+                if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) {
+                    return;
+                }
+                this.style.transition = 'none';
+                this.style.transform = 'translate(' + dx + 'px,' + dy + 'px)';
+            });
+
+            // Force layout so transforms above are applied before animating back.
+            $mainMenu[0].offsetHeight;
+
+            $nodes.each(function () {
+                this.style.transition = 'transform ' + SIDEBAR_TOGGLE_ANIM_MS + 'ms cubic-bezier(0.22, 1, 0.36, 1)';
+                this.style.transform = '';
+            });
+
+            window.setTimeout(function () {
+                $nodes.each(function () {
+                    this.style.transition = '';
+                    this.style.transform = '';
+                });
+                $mainMenu.removeClass('menu-layout-animating');
+            }, SIDEBAR_TOGGLE_ANIM_MS + 20);
+        });
+    }
+
     function toggleSidebarMinifiedState() {
+        if (isSidebarToggleAnimating) {
+            return;
+        }
+        isSidebarToggleAnimating = true;
+
         var $app = $('#app');
         var targetClass = 'app-sidebar-minified';
         var isMinified = $app.hasClass(targetClass);
 
-        if (isMinified) {
-            $app.removeClass(targetClass);
-            try {
-                localStorage.removeItem('appSidebarMinified');
-            } catch (e) { }
-        } else {
-            $app.addClass(targetClass);
-            try {
-                localStorage.setItem('appSidebarMinified', true);
-            } catch (e) { }
-        }
+        animateMainMenuLayoutFlip(function () {
+            if (isMinified) {
+                $app.removeClass(targetClass);
+                try {
+                    localStorage.removeItem('appSidebarMinified');
+                } catch (e) { }
+            } else {
+                $app.addClass(targetClass);
+                try {
+                    localStorage.setItem('appSidebarMinified', true);
+                } catch (e) { }
+            }
 
-        syncMainMenuMinifiedState();
+            syncMainMenuMinifiedState();
+        });
+
+        window.setTimeout(function () {
+            isSidebarToggleAnimating = false;
+        }, SIDEBAR_TOGGLE_ANIM_MS + 40);
     }
 
     function syncMainMenuMinifiedState() {
@@ -1808,8 +1878,7 @@ $(function(){
             var isPinned = !!pinnedIndex[itemId];
             var hasActivity = menuItemHasActivity($item);
             var isCurrent = menuItemIsCurrent($item);
-            var isPreferredFirst = sectionState.openFirstId && itemId === sectionState.openFirstId;
-            var shouldShow = isShowAll || hasActivity || isPinned || isCurrent || isPreferredFirst;
+            var shouldShow = isShowAll || hasActivity || isPinned || isCurrent;
 
             $item.toggleClass('menu-smart-hidden', !shouldShow);
             if (!shouldShow) {
@@ -1916,6 +1985,13 @@ $(function(){
 
                 resetSmartSectionShowAll(sectionId);
                 renderSmartMenuSection(sectionId);
+
+                // Keep currently visible float submenu in sync after auto-reset.
+                var $floatMenu = $('.app-float-submenu').first();
+                var $sourceSubmenu = $('#mainmenu > .menu-item[data-elementid="' + sectionId + '"] > .menu-submenu').first();
+                if ($floatMenu.length && $sourceSubmenu.length) {
+                    $floatMenu.html($sourceSubmenu.html());
+                }
             });
 
         $(document)
@@ -2650,5 +2726,3 @@ $(function () {
 
     
 });
-
-

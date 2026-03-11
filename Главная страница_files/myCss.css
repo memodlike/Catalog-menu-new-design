@@ -3146,6 +3146,10 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
     transition: margin-left 0.24s cubic-bezier(0.22, 1, 0.36, 1), width 0.24s cubic-bezier(0.22, 1, 0.36, 1), transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+#app .app-sidebar .app-sidebar-content {
+    transition: width 0.24s cubic-bezier(0.22, 1, 0.36, 1), padding 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 #mainmenu > .menu-header {
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -3193,6 +3197,24 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
     transition: transform 0.18s ease;
 }
 
+#mainmenu > .menu-item > .menu-link {
+    transition: background-color 0.16s ease, color 0.16s ease, padding 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#mainmenu > .menu-item > .menu-link .menu-text {
+    display: inline-block !important;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 11.5rem;
+    opacity: 1;
+    transform: translateX(0);
+    transition: max-width 0.22s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.18s ease, transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#mainmenu > .menu-item > .menu-link .menu-caret {
+    transition: opacity 0.18s ease, max-width 0.22s cubic-bezier(0.22, 1, 0.36, 1), margin-left 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 #mainmenu > .menu-header .menu-header-toggle:hover {
     color: #2f6cec;
     background: transparent;
@@ -3238,6 +3260,28 @@ body.dark #kanban-navbar button.tasktype-draggable.tasktype-drop-after::after {
     margin-right: 0;
     margin-inline: auto;
     transform: none;
+}
+
+#app.app-sidebar-minified #mainmenu > .menu-item > .menu-link .menu-text {
+    max-width: 0 !important;
+    opacity: 0;
+    transform: translateX(-0.25rem);
+    margin-left: 0 !important;
+    pointer-events: none;
+}
+
+#app.app-sidebar-minified #mainmenu > .menu-item > .menu-link .menu-caret {
+    max-width: 0;
+    opacity: 0;
+    margin-left: 0 !important;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+#mainmenu.menu-layout-animating > .menu-header,
+#mainmenu.menu-layout-animating > .menu-item {
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 #mainmenu .menu-item.has-sub > .menu-link .menu-caret {

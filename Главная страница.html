@@ -2874,6 +2874,185 @@
     <script src="./Главная страница_files/Kanban.js"></script>
     <script src="./Главная страница_files/FormsCore.js"></script>
     <script src="./Главная страница_files/FormsSearch.js"></script>
+    <script>
+      (function () {
+        function waitFor(selector, timeoutMs) {
+          return new Promise(function (resolve) {
+            var timeout = Number(timeoutMs || 3000);
+            var startedAt = Date.now();
+            var timer = window.setInterval(function () {
+              var node = document.querySelector(selector);
+              if (node) {
+                window.clearInterval(timer);
+                resolve(node);
+                return;
+              }
+              if (Date.now() - startedAt >= timeout) {
+                window.clearInterval(timer);
+                resolve(null);
+              }
+            }, 50);
+          });
+        }
+
+        function clickNode(node) {
+          if (!node) {
+            return false;
+          }
+          node.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+          return true;
+        }
+
+        function clickSelector(selector) {
+          return clickNode(document.querySelector(selector));
+        }
+
+        function hoverNode(node) {
+          if (!node) {
+            return false;
+          }
+          ['mouseenter', 'mouseover', 'mousemove'].forEach(function (eventName) {
+            node.dispatchEvent(new MouseEvent(eventName, { bubbles: true, cancelable: true, view: window }));
+          });
+          return true;
+        }
+
+        function setDarkMode(enabled) {
+          document.body.classList.toggle('dark-mode', !!enabled);
+          var themeCheckbox = document.getElementById('appThemeDarkMode');
+          if (themeCheckbox) {
+            themeCheckbox.checked = !!enabled;
+          }
+        }
+
+        function ensureSidebarMinified(enabled) {
+          var app = document.getElementById('app');
+          if (!app) {
+            return;
+          }
+          var shouldMinify = !!enabled;
+          var isMinified = app.classList.contains('app-sidebar-minified');
+          if (isMinified === shouldMinify) {
+            return;
+          }
+          var clicked = clickSelector('#mainmenu > .menu-header .menu-header-toggle');
+          if (!clicked) {
+            app.classList.toggle('app-sidebar-minified', shouldMinify);
+            return;
+          }
+          window.setTimeout(function () {
+            if (app.classList.contains('app-sidebar-minified') !== shouldMinify) {
+              app.classList.toggle('app-sidebar-minified', shouldMinify);
+            }
+          }, 300);
+        }
+
+        async function openCollapsedFlyout(menuElementId, showAll) {
+          ensureSidebarMinified(true);
+          await waitFor('#mainmenu > .menu-item.has-sub[data-elementid="' + menuElementId + '"] > .menu-link', 2500);
+          var menuLink = document.querySelector('#mainmenu > .menu-item.has-sub[data-elementid="' + menuElementId + '"] > .menu-link');
+          if (!hoverNode(menuLink)) {
+            return;
+          }
+          await waitFor('.app-float-submenu', 2000);
+          if (showAll) {
+            clickSelector('.app-float-submenu .menu-smart-toggle-btn');
+          }
+        }
+
+        function openDropdown(buttonSelector) {
+          var button = document.querySelector(buttonSelector);
+          if (!button) {
+            return;
+          }
+          clickNode(button);
+        }
+
+        function emulateTaskTypeDrag() {
+          var navbar = document.getElementById('kanban-navbar');
+          if (!navbar) {
+            return;
+          }
+          var taskButtons = navbar.querySelectorAll('button.tasktype-draggable');
+          if (taskButtons.length < 2) {
+            return;
+          }
+          navbar.classList.add('tasktype-drag-active');
+          taskButtons[0].classList.add('tasktype-dragging');
+          taskButtons[1].classList.add('tasktype-drop-target', 'tasktype-drop-after');
+          taskButtons[2] && taskButtons[2].classList.add('tasktype-drop-before');
+        }
+
+        async function applyFigmaState() {
+          var params = new URLSearchParams(window.location.search);
+          var state = params.get('figmaState');
+          if (!state) {
+            return;
+          }
+
+          setDarkMode(false);
+          ensureSidebarMinified(false);
+
+          if (state === 'dark') {
+            setDarkMode(true);
+            return;
+          }
+          if (state === 'default' || state === 'light-expanded') {
+            return;
+          }
+          if (state === 'sidebar-minified') {
+            ensureSidebarMinified(true);
+            return;
+          }
+          if (state === 'sidebar-minified-lk-flyout') {
+            await openCollapsedFlyout('33', false);
+            return;
+          }
+          if (state === 'sidebar-minified-docs-showall') {
+            await openCollapsedFlyout('1202', true);
+            return;
+          }
+          if (state === 'profile-dropdown-open') {
+            openDropdown('#header .menu .menu-item.dropdown > a.menu-link[data-bs-toggle="dropdown"]');
+            return;
+          }
+          if (state === 'priority-dropdown-open') {
+            openDropdown('#priorityDropdown');
+            return;
+          }
+          if (state === 'user-dropdown-open') {
+            openDropdown('#userDropdown');
+            return;
+          }
+          if (state === 'dept-dropdown-open') {
+            openDropdown('#deptDropdown');
+            return;
+          }
+          if (state === 'kanban-tasktype-drag') {
+            emulateTaskTypeDrag();
+            return;
+          }
+          if (state === 'dark-minified-lk-flyout') {
+            setDarkMode(true);
+            await openCollapsedFlyout('33', false);
+            return;
+          }
+        }
+
+        function bootFigmaState() {
+          window.setTimeout(function () {
+            applyFigmaState().catch(function () {});
+          }, 250);
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', bootFigmaState, { once: true });
+        } else {
+          bootFigmaState();
+        }
+      })();
+    </script>
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 
 
 
